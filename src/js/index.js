@@ -36,7 +36,19 @@ function App() {
           </button>
         </li>`;
         };
-        $("#espresso-menu-list").innerHTML = menuItemTemplate(espressoMenuName);
+
+        // <!-- beforebegin -->
+        // <p>
+        // <!-- afterbegin -->
+        // foo
+        // <!-- beforeend -->
+        // </p>
+        // <!-- afterend -->
+
+        $("#espresso-menu-list").insertAdjacentHTML(
+          "beforeend",
+          menuItemTemplate(espressoMenuName)
+        );
       };
     });
 }
