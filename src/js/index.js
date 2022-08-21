@@ -1,3 +1,9 @@
+// step1 에서 얻은 인사이트
+// 1. 이벤트 위임을 어떻게 할 수 있는지 알게 되서 좋았다.
+// 2. 요구사항을 전략적으로 접근해야하는지, 단계별로 세세하게 나누는게 중요하다는 것을 알게되었다.
+// 3. DOM 요소를 가져올 때는 $표시를 써서 변수처럼 사용할 수 있는게 좋았다.
+// 4. 새롭게 알게 된 메서드 innerText, innerHTML, insertAdjacentHTML, closest, e.target
+
 // step1 요구사항 구현을 위한 전략
 // TODO 메뉴 추가
 // - [x] 메뉴의 이름을 입력 받고 엔터키 입력으로 추가한다.
@@ -14,11 +20,43 @@
 // TODO 메뉴 삭제
 // - [x] 메뉴 삭제 버튼 클릭 이벤트를 받고, 메뉴 삭제 컨펌(confirm) 모달창이 뜬다.
 // - [x] 확인 버튼을 클릭하면 메뉴가 삭제된다.
-// - [ ] 총 메뉴 갯수를 count하여 상단에 보여준다.
+// - [x] 총 메뉴 갯수를 count하여 상단에 보여준다.
+
+
+// step2 요구사항 구현을 위한 전략
+// TODO localStorage Read & Write
+// - [] localStorage에 데이터를 저장한다.
+// - [] localStorage에 있는 데이터를 읽어온다.
+
+// TODO 카테고리별 메뉴판 관리
+// - [] 에스프레소 메뉴판 관리
+// - [] 프라푸치노 메뉴판 관리
+// - [] 블렌디드 메뉴판 관리
+// - [] 티바나 메뉴판 관리
+// - [] 디저트 메뉴판 관리
+
+// TODO 페이지 접근시 최초 데이터 Read & Rendering
+// - [] 페이지에 최초로 로딩될 때, localStorage에 에스프레소 메뉴를 읽어온다.
+// - [] 에스프레소 메뉴를 페이지에 그려준다.
+
+// TODO 품절 상태 관리
+// - [] 품절 버튼을 추가한다.
+// - [] 품절 버튼을 클릭하면 localStorage에 상태값이 저장된다.
+// - [] 클릭 이벤트에서 가장 가까운 li태그의 class속성값에 sold-out을 추가한다.
 
 const $ = (selector) => document.querySelector(selector);
 
+const store = {
+  setLocalStorage(menu) {
+    localstorage.setItem("menu", JSON.stringify(menu));
+  },
+  getLocalStorage() {
+    localStorage.getItem("menu");
+  },
+}
+
 function App() {
+  // 상태(변하는 데이터) - 메뉴명
   const updateMenuCount = () => {
     const menuCount = $("#espresso-menu-list").querySelectorAll("li").length;
     $(".menu-count").innerText = `총 ${menuCount}개`
