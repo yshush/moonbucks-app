@@ -61,6 +61,7 @@ const store = { //저장, 불러오기용 객체
 function App() {
   // 상태(변하는 데이터) - 메뉴명
   this.menu = [];
+  
   const updateMenuCount = () => {
     const menuCount = $("#espresso-menu-list").querySelectorAll("li").length;
     $(".menu-count").innerText = `총 ${menuCount}개`
@@ -75,9 +76,9 @@ function App() {
     this.menu.push({ name: espressoMenuName });
     store.setLocalStorage(this.menu);
     const template = this.menu
-      .map((menuItem) => {
+      .map((menuItem, index) => {
         return `
-        <li class="menu-list-item d-flex items-center py-2">
+        <li data-menu-id="${index}" class="menu-list-item d-flex items-center py-2">
           <span class="w-100 pl-2 menu-name">${menuItem.name}</span>
           <button
             type="button"
@@ -101,8 +102,11 @@ function App() {
   };
 
   const updateMenuName = (e) => {
+    const menuId = e.target.closest("li").dataset.menuId;
     const $menuName = e.target.closest("li").querySelector(".menu-name");
     const updatedMenuName = prompt("메뉴명을 수정하세요", $menuName.innerText);
+    this.menu[menuId].name = updatedMenuName;
+    store.setLocalStorage(this.menu);
     $menuName.innerText = updatedMenuName;
   }
 
