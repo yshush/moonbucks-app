@@ -57,7 +57,7 @@
 // - [x] 서버에 카테고리별 메뉴리스트를 불러온다.
 // - [x] 서버에 메뉴가 수정될 수 있도록 요청한다.
 // - [x] 서버에 메뉴의 품절상태가 토글될 수 있도록 요청한다.
-// - [] 서버에 메뉴가 삭제될 수 있도록 요청한다.
+// - [x] 서버에 메뉴가 삭제될 수 있도록 요청한다.
 
 // TODO 리팩터링 부분
 // - [] localStorage에 저장하는 로직은 지운다.
@@ -114,6 +114,17 @@ const MenuApi = {
       console.error("에러가 발생했습니다.");
     }
   },
+  async removeMenu (category, menuId) {
+    const response = await fetch(
+      `${BASE_URL}/category/${category}/menu/${menuId}`,
+      {
+        method: "DELETE",
+      }
+    );
+    if (!response.ok) {
+      console.error("에러가 발생했습니다.");
+    }
+  }
 };
 
 import { $ } from "./utils/dom.js";
@@ -204,11 +215,13 @@ function App() {
     render();
   }
 
-  const removeMenuName = (e) => {
+  const removeMenuName = async (e) => {
     if (confirm("정말 삭제하시겠습니까?")) {
       const menuId = e.target.closest("li").dataset.menuId;
-      this.menu[this.currentCategory].splice(menuId, 1);
-      store.setLocalStorage(this.menu);
+      await MenuApi.removeMenu(this.currentCategory, menuId);
+      this.menu[this.currentCategory] = await MenuApi.getAllMenuByCategory(
+        this.currentCategory
+      );
       render();
     }
   };
